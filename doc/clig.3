@@ -1,0 +1,91 @@
+.TH clig 3
+.SH NAME
+.B
+clig
+.SM
+- C library for building CLI applications with a corresponding GUI interface.
+
+.SH DESCRIPTION
+clig provides the functionality needed to create a CLI application that
+functions similarly to a REPL in that it waits for lines of input from stdin,
+and then acts upon them by use of callbacks, after which it sends output to
+stdout.
+
+Although not hugely impactful in itself, this allows us to restrain the
+way that the CLI application interacts with stdin and stdout enough that we are
+also able to provide functionality for another application to start it's own
+instance of this CLI application, take control of it's stdin and stdout, and
+then control it, while portions of said application are able to be set up as
+listeners, reacting in an event driven way to specific messages being sent to
+the CLI application, and it's responses to those messages.
+
+This master application can be whatever you want in theory, as no GUI or
+windowing functionality is actually provided by this library but it is hoped
+that reactive GUI applications written in C would benefit from it.
+
+.SH DEFINITIONS clig.h
+.SS int clig_main(int argc, char const **argv)
+yeah nah yeah nah this is for the CLI application.
+
+.SS void clig_add_input_handler(char const *prefix, clig_input_handler_t cb);
+Only useful on CLI. Registers a new input handler that will be triggered
+whenever an input line is received that begins with the provided prefix.
+You should not add two input handlers where one's prefix is a subset of
+another but I haven't bothered to make anything specific bad happen if you do
+so it is UB I suppose.
+
+.SH DEFINITIONS ds.h
+.SS struct clig_vector_t
+Opaque vector type which is similar to a normal array except it
+can grow and shrink and all of that kind of stuff. Some operations change the
+order of the items in the vector by moving items to/from the back, so the order
+does not remain consistent after calling those functions. Also, sometimes it
+will have to grow/shrink the backing array so that it doesn't run out of space
+which might cause a little delay.
+
+.SS clig_vector_t *clig_make_vector(size_t element_size);
+Creates a vector object. element_size is the amount of bytes to allocate to each
+item in the vector.
+
+.SS void clig_vector_insert(clig_vector_t *v, void *item, size_t index);
+Inserts an element into the vector at the given index, thus increasing the size
+of the vector by 1, and changing the ordering of elements.
+The element is inserted by copying the value pointed to by item.
+
+.SS void clig_vector_remove(clig_vector_t *v, size_t index);
+Removes the element at the given index of the vector, thus decreasing the size
+by 1 and altering the order of elements.
+
+.SS void clig_vector_push(clig_vector_t *v, void *item);
+Adds an item to the end of the vector. By doing so, it does not modify the order
+of elements. Works by copying like \fBclig_vector_insert\fR.
+
+.SS void clig_vector_pop(clig_vector_t *v, void *dst);
+Removes the last element of the vector and copies it to dst. Because it comes
+from the end, the order of elements is undisturbed. Also, if you pass NULL to
+dst then it will just remove.
+
+.SS void clig_vector_peek(clig_vector_t *v, size_t index, void *dst);
+Gets the value of the element at the given index in the vector by copying it
+to the location pointed to by dst. Make sure there is enough room for it.
+Asserts that index is less than vector size.
+
+.SS size_t clig_vector_size(clig_vector_t *v);
+Tells you how many items are currently in the vector.
+
+.SS void clig_vector_trim(clig_vector_t *v, size_t margin);
+Useful to call after you have added all the stuff you intend to for the
+time being and are conscious of memory usage. It resizes the buffer to be
+equal to the highest of these three values: minimum size, capacity + margin, or
+capacity + 1 (ie margin cannot be meaningfully less than 1).
+
+.SS void *clig_vector_get_buffer(clig_vector_t *v);
+Returns a pointer to the start of the buffer where all the items are stored.
+Data should be contiguous etc, and you should just be able to cast it to your
+type and iterate over it as long as you don't exceed the value of
+.B clig_vector_size
+.SM
+as queried immediately before using this.
+
+.SS void clig_vector_free(clig_vector_t *v);
+Destroys the vector along with everything in it.
