@@ -4,10 +4,9 @@
 #include <assert.h>
 #include <string.h>
 
+#define BUF_INIT_SIZE 32
 
-#define BUF_INIT_SIZE 8
-
-struct _clig_vector_t {
+struct clig_vector_t_ {
     uint8_t *buffer;
     size_t element_size;
     size_t n;
@@ -43,7 +42,7 @@ static void move_item(clig_vector_t *v, size_t from, size_t to) {
     );
 }
 
-clig_vector_t *clig_make_vector(size_t element_size) {
+clig_vector_t *clig_vector_make(size_t element_size) {
     clig_vector_t *v = (clig_vector_t *)malloc(sizeof(clig_vector_t));
     if (v == NULL) return NULL;
     v->buffer = malloc(element_size * BUF_INIT_SIZE);
@@ -57,7 +56,7 @@ clig_vector_t *clig_make_vector(size_t element_size) {
     return v;
 }
 
-void clig_vector_insert(clig_vector_t *v, void *item, size_t index) {
+void clig_vector_insert(clig_vector_t *v, void const *item, size_t index) {
     assert(v != NULL);
     assert(item != NULL);
     assert(index <= v->n);
@@ -79,7 +78,7 @@ void clig_vector_remove(clig_vector_t *v, size_t index) {
     check_size(v);
 }
 
-void clig_vector_push(clig_vector_t *v, void *item) {
+void clig_vector_push(clig_vector_t *v, void const *item) {
     assert(v != NULL);
     assert(item != NULL);
     memcpy(
@@ -115,7 +114,7 @@ void clig_vector_peek(clig_vector_t *v, size_t index, void *dst) {
     );
 }
 
-size_t clig_vector_size(clig_vector_t *v) {
+size_t clig_vector_size(clig_vector_t const *v) {
     assert(v != NULL);
     return v->n;
 }
