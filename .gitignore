@@ -4,3 +4,4 @@ clig_tests
 *.a
 *.o
 .DS_Store
+*.swp

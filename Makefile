@@ -12,8 +12,8 @@ LIB_NAME = libclig.a
 TEST_BIN = clig_tests
 
 SRCS  = $(SRC_DIR)/clig.c \
-        $(SRC_DIR)/map.c  \
-        $(SRC_DIR)/vector.c
+        $(SRC_DIR)/clig_map.c  \
+        $(SRC_DIR)/clig_vector.c
 OBJS  = $(SRCS:.c=.o)
 
 TEST_SRCS = $(TEST_DIR)/test_main.c \
