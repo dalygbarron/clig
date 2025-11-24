@@ -2,7 +2,7 @@ CC      ?= cc
 AR      ?= ar
 ARFLAGS ?= rcs
 
-CFLAGS  ?= -Wall -Wextra -std=c11 -g
+CFLAGS  ?= -Wall -Wextra -std=gnu17 -g
 INCLUDES = -Iinclude
 
 SRC_DIR  = src
@@ -12,13 +12,11 @@ LIB_NAME = libclig.a
 TEST_BIN = clig_tests
 
 SRCS  = $(SRC_DIR)/clig.c \
-        $(SRC_DIR)/clig_map.c  \
-        $(SRC_DIR)/clig_vector.c
+		$(SRC_DIR)/clig_xform.c
 OBJS  = $(SRCS:.c=.o)
 
 TEST_SRCS = $(TEST_DIR)/test_main.c \
-            $(TEST_DIR)/vector.c \
-			$(TEST_DIR)/map.c
+			$(TEST_DIR)/xform.c
 TEST_OBJS = $(TEST_SRCS:.c=.o)
 
 CUNIT_CFLAGS ?= $(shell pkg-config --cflags cunit)
