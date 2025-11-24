@@ -9,12 +9,13 @@
     X("X", "X") \
     X("123456", "654321") \
     X("321321", "123123") \
-    X("Gaming Big Time", "emiT giB gnimaG") \
+    X("Gaming Big Time", NULL) \
     X("loop", "pool") \
     X("", "") \
     X("+-+", "+-+")
 
 static char *reverse_text(char const *input) {
+    if (strcmp(input, "Gaming Big Time") == 0) return NULL;
     size_t size = strlen(input);
     char *buffer = malloc(sizeof(char) * (size + 1));
     buffer[size] = 0;
@@ -29,7 +30,11 @@ static void test_xform_get(void) {
     CU_ASSERT_PTR_NOT_NULL(x);
     for (int i = 0; i < 3; i++) {
         #define X(normal, reverse) \
-        CU_ASSERT_STRING_EQUAL(reverse, clig_xform_get(x, normal));
+        if (reverse) { \
+            CU_ASSERT_STRING_EQUAL(reverse, clig_xform_get(x, normal)); \
+        } else { \
+            CU_ASSERT_PTR_EQUAL(reverse, clig_xform_get(x, normal)); \
+        }
         TEST_STRINGS
         #undef X
     }
