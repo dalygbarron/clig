@@ -28,12 +28,3 @@ char const *read_token(char const *input, char *dst) {
     while (*end && isspace(*end)) end++;
     return end;
 }
-
-
-int clig_main(int argc, char const **argv) {
-
-}
-
-void clig_add_input_handler(char const *prefix, clig_input_handler cb) {
-
-}

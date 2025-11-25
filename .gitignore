@@ -5,3 +5,4 @@ clig_tests
 *.o
 .DS_Store
 *.swp
+demo/demo
