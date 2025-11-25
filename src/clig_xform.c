@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#define CACHE_SIZE 8
+#define CACHE_SIZE 4
 
 // The cache consists of a fixed size array of elements with string keys, void
 // pointers to data, and a doubly linked list which keeps track of the relative

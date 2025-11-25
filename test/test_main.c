@@ -3,7 +3,8 @@
 #include <CUnit/Basic.h>
 
 #define SUITES \
-    X(add_xform_tests)
+    X(add_xform_tests) \
+    X(add_clig_tests)
 
 // forward declare the test suites.
 #define X(name) int name(void);

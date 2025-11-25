@@ -14,12 +14,19 @@ typedef enum {
 } clig_input_result;
 typedef struct clig_xform_t_ clig_xform_t;
 typedef clig_input_result (*clig_input_handler)(char const *);
+typedef void (*clig_prompt)();
 typedef void *(*clig_xform_func)(char const *);
 typedef void (*clig_xform_free_func)(void *);
 
 // Primarily REPL related functions.
-int clig_main(int argc, char const **argv);
-void clig_add_input_handler(char const *prefix, clig_input_handler cb);
+void clig_repl_add_input_handler(char const *prefix, clig_input_handler cb);
+void clig_repl_set_info(
+    char const *name,
+    char const *version,
+    char const *help,
+    clig_prompt prompt
+);
+int clig_repl_main(int argc, char **argv);
 
 // Primarily master related functions.
 

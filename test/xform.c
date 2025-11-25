@@ -33,7 +33,7 @@ static void test_xform_get(void) {
         if (reverse) { \
             CU_ASSERT_STRING_EQUAL(reverse, clig_xform_get(x, normal)); \
         } else { \
-            CU_ASSERT_PTR_EQUAL(reverse, clig_xform_get(x, normal)); \
+            CU_ASSERT_PTR_NULL(clig_xform_get(x, normal)); \
         }
         TEST_STRINGS
         #undef X
